@@ -1,0 +1,10 @@
+#text {
+    background-color: rgb(180, 180, 180);
+    border: 10px solid black;
+    border-radius: 20px 80px;
+    width: 350px;
+}
+
+p {
+    margin: 25px;
+}
