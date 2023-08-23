@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jokenpo</title>
+</head>
+<body>
+  <script>
+    let perdeu = false;
+    let pontos = 0;
+
+    while(!perdeu) {  
+        console.log("Escolha sua jogada: ");
+        console.log("1 - Pedra\n2 - Papel\n3 - Tesoura");
+        let jogada = parseInt(prompt("Insira o número da sua jogada:"));
+        let jogadaComputador = Math.floor(Math.random() * 3) + 1;
+
+        console.log("O computador jogou: "+jogadaComputador);
+
+        if((jogada === 1 && jogadaComputador ===3) || (jogada===2 && jogadaComputador===1) || (jogada===3 && jogadaComputador===2)) {
+            console.log("Você ganhou!");
+            pontos++;
+        } else if(jogada === jogadaComputador) {
+            console.log("A rodada empatou!")
+        } else if(jogada!==1 || jogada!==2 || jogada!==3) {
+            perdeu = true;
+            console.log("Sua jogada foi inválida e você perdeu! A sua pontuação foi de: "+pontos);
+        } else { 
+            perdeu = true;
+            console.log("Você perdeu! A sua pontuação foi de: "+pontos);
+        }
+    }
+  </script>
+</body>
+</html>
