@@ -1,0 +1,21 @@
+.barraInput {
+    width: 60px;
+    margin: 5px;
+}
+
+#botaoSubmit{
+    margin: 20px 0;
+    background-color: rgba(187, 80, 117, 0.194);
+}
+
+.barras {
+    background-color: red;
+    display: inline-block;
+}
+
+.grafico {
+    width: 100%;
+}
+
+
+
