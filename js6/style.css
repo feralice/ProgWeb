@@ -1,0 +1,9 @@
+div {
+    position:absolute;
+    background-color: rgb(75, 28, 170);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 3rem;
+}
+
