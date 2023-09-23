@@ -1,0 +1,13 @@
+Na linguagem Javascript, qual é a diferença entre == e === ?
+
+
+O "==" vê apenas se os valores são iguais, sem ligar para o tipo
+Por exemplo: 
+5 == '5'
+irá retornar true mesmo um sendo number e o outro string
+
+Já o "===" vê se os valores são iguais, mas também confere se os tipos são iguais
+Por exemplo: 
+5 === '5'
+irá retornar false pois um é number e o outro string
+mas 5 === 5 irá retornar true, pois ambos são numbers

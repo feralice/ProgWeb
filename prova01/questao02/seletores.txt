@@ -1,0 +1,4 @@
+Podemos utilizar:
+id - um seletor único,
+class
+e por atributo
