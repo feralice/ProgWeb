@@ -13,7 +13,6 @@ const server = http.createServer((req, res) => {
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('erro :(');
     } else {
-
       const arquivosRetornados = files.map(file => `<li>${file}</li>`).join('');
 
       const htmlResponse = `
