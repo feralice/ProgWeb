@@ -1,0 +1,97 @@
+.deserto {
+  border: 1px solid black;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.chao {
+  background-image: url(../img/sprite.png);
+  position: absolute;
+  bottom: 0px;
+  background-position-y: -78px;
+  width: 1831px;
+  height: 20px;
+  z-index: 2;
+}
+
+.dino {
+  background-image: url(../img/sprite.png);
+  position: absolute;
+  width: 66px;
+  left: 20px;
+  height: 70px;
+  z-index: 3;
+}
+
+.nuvem {
+  background-image: url(../img/sprite.png);
+  background-position: -125px -2px;
+  position: absolute;
+  width: 70px;
+  height: 20px;
+  z-index: 2;
+}
+
+.score {
+  position: absolute;
+  left: 90%;
+  z-index: 4;
+  font-family: 'Press Start 2P';
+}
+
+
+.cacto1 {
+  background-image: url(../img/cacto1.png);
+  position: absolute;
+  width: 150px;
+  height: 100px;
+  z-index: 999;
+  transform: scale(0.4 ); 
+}
+
+.doisCactos {
+  background-image: url(../img/doisCactos.png);
+  position: absolute;
+  width: 150px;
+  height: 100px;
+  z-index: 999;
+  transform: scale(0.4 );
+}
+
+.variosCactos {
+  background-image: url(../img/variosCactos.png);
+  position: absolute;
+  width: 150px;
+  height: 100px;
+  z-index: 999;
+  transform: scale(0.4 );
+}
+
+.passaro {
+  background-image: url(../img/sprite.png);
+  position: absolute;
+  z-index: 999;
+}
+
+.perdeu {
+  background-image: url(../img/sprite.png);
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  background-position: -966px -23px;
+  width: 289px;
+  height: 50px;
+  z-index: 999;
+}
+
+.restart {
+  background-image: url(../img/sprite.png);
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  width: 60px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
