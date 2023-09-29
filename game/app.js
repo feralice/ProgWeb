@@ -2,21 +2,25 @@ const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const path = require('path');
-const routes = require('./routes');
 
 const app = express();
+const PORT = 3000;
 
 app.use(morgan('dev'));
 
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+//configurações do handlebars como a engine de visualização
+app.engine('.hbs', exphbs.engine({
+  extname: '.hbs',
+  defaultLayout: null 
+}));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname, 'views')); // pega o handlebars da pasta views
 
-app.set('views', path.join(__dirname, 'views'));
-
+//chama as rotas criadas
+const routes = require('./routes');
 app.use('/', routes);
 
-const PORT = process.env.PORT || 3000;
-
+//servidor
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}, entre em http://localhost:${PORT}/about :)`);
 });
