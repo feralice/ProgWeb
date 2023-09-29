@@ -21,7 +21,7 @@
   width: 66px;
   left: 20px;
   height: 70px;
-  z-index: 3;
+  z-index: 4;
 }
 
 .nuvem {
@@ -30,33 +30,33 @@
   position: absolute;
   width: 70px;
   height: 20px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .score {
   position: absolute;
   left: 90%;
-  z-index: 4;
+  z-index: 5;
   font-family: 'Press Start 2P';
 }
 
 
-.cacto1 {
+.cactoUm {
   background-image: url(../img/cacto1.png);
   position: absolute;
-  width: 150px;
+  width: 50px;
   height: 100px;
-  z-index: 999;
-  transform: scale(0.4 ); 
+  z-index: 5;
+  transform: scale(0.6);
 }
 
 .doisCactos {
   background-image: url(../img/doisCactos.png);
   position: absolute;
-  width: 150px;
+  width: 100px;
   height: 100px;
-  z-index: 999;
-  transform: scale(0.4 );
+  z-index: 5;
+  transform: scale(0.5);
 }
 
 .variosCactos {
@@ -64,14 +64,14 @@
   position: absolute;
   width: 150px;
   height: 100px;
-  z-index: 999;
-  transform: scale(0.4 );
+  z-index: 5;
+  transform: scale(0.4);
 }
 
 .passaro {
   background-image: url(../img/sprite.png);
   position: absolute;
-  z-index: 999;
+  z-index: 5;
 }
 
 .perdeu {
@@ -82,7 +82,7 @@
   background-position: -966px -23px;
   width: 289px;
   height: 50px;
-  z-index: 999;
+  z-index: 6;
 }
 
 .restart {
@@ -93,5 +93,5 @@
   width: 60px;
   height: 50px;
   transform: translate(-50%, -50%);
-  z-index: 1000;
+  z-index: 6;
 }

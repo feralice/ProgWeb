@@ -4,54 +4,76 @@
   const WIDTH = 1024;
   const PROB_NUVEM = 0.5;
   const MINUTO = 60000;
-  const AUMENTO_FPS_POR_MINUTO = 100;
-  const MARGEM_ESPACO = 1; 
-
+  const MARGEM_ESPACO = 1;
+  const velocidades = {
+    cacto: 3,
+    passaro: 5
+  };
+  const alturasPassaro = [20, 40, 120];
+  const status = { correndo: 0, subindo: 1, abaixando: 2, abaixandoLentamente: 3 };
+  const elementos = {};
+  const intervalos = {
+    criacaoObstaculo: 3000,
+    trocarTurno: MINUTO,
+    aumentarVelocidade: MINUTO
+  };
   let ehDia = true;
   let gameLoop;
   let jogoIniciado = false;
   let jogoPausado = false;
-  let deserto;
-  let dino;
   let nuvens = [];
-  let intervaloCriacaoObstaculo = 100;
   let ultimoObstaculoTempo = 0;
   let obstaculos = [];
   let frame = 0;
-  let pontuacao= 0;
+  let pontuacao = 0;
 
   function init() {
-    deserto = new Deserto();
-    dino = new Dino();
-    setInterval(trocarTurno, MINUTO);
-    setInterval(aumentarVelocidade, MINUTO);
+    criarElementos();
+    setInterval(trocarTurno, intervalos.trocarTurno);
+    setInterval(aumentarVelocidade, intervalos.aumentarVelocidade);
   }
 
-  // keydown é tecla pressionada
+  function criarElementos() {
+    elementos.deserto = new Deserto();
+    elementos.dino = new Dino();
+  }
+
   window.addEventListener("keydown", (e) => {
-
     if (e.code === "KeyP") {
-      jogoPausado = !jogoPausado;
-      if (!jogoPausado) {
-        gameLoop = setInterval(run, 1000 / FPS);
-      } else {
-        clearInterval(gameLoop);
-      }
+      toggleJogoPausado();
     }
-    if (e.code === "Space" || e.code === "ArrowUp") {
-      if(!jogoIniciado) {
-        jogoIniciado = true;
-        gameLoop = setInterval(run, 1000 / FPS);
-      }
 
-      if (dino.status === 0) dino.status = 1;
-
-    } else if (e.code === "ArrowDown") {
-      if (dino.status === 0) dino.status = 2;
-    } else if (e.code === "KeyP") {
-      jogoIniciado = false;
+    if (!jogoPausado && (e.code === "Space" || e.code === "ArrowUp")) {
+      iniciarJogo();
+    } else if (!jogoPausado && e.code === "ArrowDown") {
+      agacharDino();
     }
   });
+
+  function toggleJogoPausado() {
+    jogoPausado = !jogoPausado;
+
+    if (jogoPausado) {
+      clearInterval(gameLoop);
+    } else if (jogoIniciado) {
+      gameLoop = setInterval(run, 1000 / FPS);
+    }
+  }
+
+  function iniciarJogo() {
+    if (!jogoIniciado) {
+      jogoIniciado = true;
+      gameLoop = setInterval(run, 1000 / FPS);
+    }
+
+    elementos.dino.status = status.subindo;
+  }
+
+  function agacharDino() {
+    if (!jogoPausado && elementos.dino.status === status.correndo) {
+      elementos.dino.status = status.abaixando;
+    }
+  }
 
   class Deserto {
     constructor() {
@@ -67,7 +89,9 @@
       this.element.appendChild(this.chao);
     }
     mover() {
-      this.chao.style.backgroundPositionX = `${parseInt(this.chao.style.backgroundPositionX) - 1}px`;
+      this.chao.style.backgroundPositionX = `${parseInt(
+        this.chao.style.backgroundPositionX
+      ) - 1}px`;
     }
   }
 
@@ -82,7 +106,7 @@
       };
       this.#status = 0; // 0-correndo, 1-subindo, 2-descendo
       this.alturaMinima = 1;
-      this.alturaMaxima = 200;
+      this.alturaMaxima = 160;
       this.element = document.createElement("div");
       this.element.className = "dino";
       this.element.style.backgroundPositionX = this.backgroundPositionsX.pulando;
@@ -93,9 +117,9 @@
       this.elementoScoreTexto = document.createElement("p");
       this.elementoScoreTexto.innerText = "00000";
       this.elementoScore.appendChild(this.elementoScoreTexto);
-      deserto.element.appendChild(this.elementoScore);
+      elementos.deserto.element.appendChild(this.elementoScore);
       this.pontos = 0;
-      deserto.element.appendChild(this.element);
+      elementos.deserto.element.appendChild(this.element);
     }
     /**
      * @param {number} value
@@ -122,28 +146,43 @@
         if (parseInt(this.element.style.bottom) >= this.alturaMaxima) {
           this.status = 3;
         }
+      }
 
       //status 2 : abaixando
-      } else if (this.#status === 2) {
-        this.element.style.backgroundPositionX = this.backgroundPositionsX.abaixando;
+      else if (this.#status === 2) {
+        this.element.style.backgroundPositionX =
+          this.backgroundPositionsX.abaixando;
         this.element.style.width = "90px";
-        this.element.style.bottom = `${parseInt(this.element.style.bottom) - 0.1}px`;
+        this.element.style.height = "50px";
+        this.element.style.bottom = `${parseInt(
+          this.element.style.bottom
+        ) - 0.1}px`;
 
-        if (parseInt(this.element.style.bottom) <= this.alturaMinima && frame === 1) {
+        if (
+          parseInt(this.element.style.bottom) <= this.alturaMinima &&
+          frame === 1
+        ) {
           this.element.style.width = "66px";
+          this.element.style.height = "70px";
           this.status = 0;
           this.element.style.bottom = 0;
         }
+      }
 
       // status 3 : abaixando lentamente do pulo
-      } else if (this.#status === 3) {
+      else if (this.#status === 3) {
         this.element.style.backgroundPositionX = this.backgroundPositionsX.pulando;
-        this.element.style.bottom = `${parseInt(this.element.style.bottom) - 0.1}px`;
-        if (parseInt(this.element.style.bottom) <= this.alturaMinima && frame === 1) {
+        this.element.style.bottom = `${parseInt(
+          this.element.style.bottom
+        ) - 0.1}px`;
+        if (
+          parseInt(this.element.style.bottom) <= this.alturaMinima &&
+          frame === 1
+        ) {
           this.status = 0;
           this.element.style.bottom = 0;
         }
-      } 
+      }
     }
   }
 
@@ -153,157 +192,184 @@
       this.element.className = "nuvem";
       this.element.style.right = 0;
       this.element.style.top = `${parseInt(Math.random() * 200)}px`;
-      deserto.element.appendChild(this.element);
+      elementos.deserto.element.appendChild(this.element);
     }
     mover() {
       this.element.style.right = `${parseInt(this.element.style.right) + 1}px`;
     }
   }
 
-  class Cacto {
-    constructor() {
+  class Obstaculo {
+    constructor(className) {
       this.element = document.createElement("div");
-      this.element.className = "cacto1";
+      this.element.className = className;
       this.element.style.right = 0;
       this.element.style.bottom = "-20px";
-      deserto.element.appendChild(this.element);
+      elementos.deserto.element.appendChild(this.element);
     }
+
     mover() {
-      this.element.style.right = `${parseInt(this.element.style.right) + 3}px`;
+      this.element.style.right = `${parseInt(this.element.style.right) + velocidades.cacto}px`;
     }
   }
 
-  class DoisCactos {
+  class Cacto extends Obstaculo {
     constructor() {
-      this.element = document.createElement("div");
-      this.element.className = "doisCactos";
-      this.element.style.right = 0;
-      this.element.style.bottom = "-20px";
-      deserto.element.appendChild(this.element);
-    }
-    mover() {
-      this.element.style.right = `${parseInt(this.element.style.right) + 3}px`;
+      super("cactoUm");
+      this.element.classList.add("cactoUm"); // Add the CSS class
     }
   }
-
-  class VariosCactos {
+  
+  class DoisCactos extends Obstaculo {
     constructor() {
-      this.element = document.createElement("div");
-      this.element.className = "variosCactos";
-      this.element.style.right = 0;
-      this.element.style.bottom = "-20px";
-      deserto.element.appendChild(this.element);
+      super("doisCactos");
+      this.element.classList.add("doisCactos"); // Add the CSS class
     }
-    mover() {
-      this.element.style.right = `${parseInt(this.element.style.right) + 3}px`;
+  }
+  
+  class VariosCactos extends Obstaculo {
+    constructor() {
+      super("variosCactos");
+      this.element.classList.add("variosCactos"); // Add the CSS class
     }
   }
 
   class Passaro {
-    constructor() {
+    constructor(altura) {
       this.backgroundPositionsX = {
         fechandoAsa: "-195px",
         abrindoAsa: "-261px",
       };
-  
+
       this.element = document.createElement("div");
       this.element.className = "passaro";
       this.element.style.backgroundPositionX = this.backgroundPositionsX.fechandoAsa;
-      this.element.style.bottom = "60px";
+      this.element.style.bottom = `${altura}px`; // Ajuste da altura do pássaro
       this.element.style.width = "50px";
-      this.element.style.height = "50px";
+      this.element.style.height = "45px";
       this.element.style.right = "0px";
       this.abrindoAsa = false;
-      deserto.element.appendChild(this.element);
+      elementos.deserto.element.appendChild(this.element);
     }
-  
+
     mover() {
-      this.element.style.right = `${parseInt(this.element.style.right) + 10}px`;
+      this.element.style.right = `${parseInt(this.element.style.right) + velocidades.passaro}px`;
     }
-  
+
     voar() {
-      //alterar as fotos do passaro
       if (frame % 20 === 0) {
         this.abrindoAsa = !this.abrindoAsa;
-  
-        this.element.style.backgroundPositionX =
-          this.abrindoAsa
-            ? this.backgroundPositionsX.abrindoAsa
-            : this.backgroundPositionsX.fechandoAsa;
+        this.element.style.backgroundPositionX = this.abrindoAsa
+          ? this.backgroundPositionsX.abrindoAsa
+          : this.backgroundPositionsX.fechandoAsa;
       }
     }
   }
 
+  function criarCacto() {
+    obstaculos.push(new Cacto());
+  }
+
+  function criarDoisCactos() {
+    obstaculos.push(new DoisCactos());
+  }
+
+  function criarVariosCactos() {
+    obstaculos.push(new VariosCactos());
+  }
+
   function run() {
-    frame = frame + 1;
-    if (frame === FPS) frame = 0;
+    frame = (frame + 1) % FPS;
+
     if (!jogoPausado) {
-      deserto.mover();
-      dino.correr();
+      elementos.deserto.mover();
+      elementos.dino.correr();
       if (Math.random() * 100 <= PROB_NUVEM) nuvens.push(new Nuvem());
-      if (frame % 2 === 0) nuvens.forEach(nuvem => nuvem.mover());
+      if (frame % 2 === 0) nuvens.forEach((nuvem) => nuvem.mover());
+
       const tempoAtual = Date.now();
 
-      if (tempoAtual - ultimoObstaculoTempo > intervaloCriacaoObstaculo) {
+      if (tempoAtual - ultimoObstaculoTempo > intervalos.criacaoObstaculo) {
         if (Math.random() * 100 <= PROB_NUVEM) {
           nuvens.push(new Nuvem());
         }
-        if (Math.random() * 1000 <= 10) {
-
-          if (frame % MARGEM_ESPACO === 0) {
-            const obstacleType = Math.random() < 0.5 ? 'cacto' : 'passaro';
+        if (Math.random() * 1000 <= 10 && frame % MARGEM_ESPACO === 0) {
+          const obstacleType = Math.random() < 0.5 ? 'cacto' : 'passaro';
 
           if (obstacleType === 'cacto') {
             const cactoType = Math.floor(Math.random() * 3);
             if (cactoType === 0) {
-              obstaculos.push(new Cacto());
+              criarCacto();
             } else if (cactoType === 1) {
-              obstaculos.push(new DoisCactos());
+              criarDoisCactos();
             } else {
-              for (let i = 0; i < 3; i++) {
-                obstaculos.push(new VariosCactos());
-              }
+              criarVariosCactos();
             }
           } else {
-            const novoPassaro = new Passaro();
+            const alturaPassaro = alturasPassaro[Math.floor(Math.random() * 3)];
+            const novoPassaro = new Passaro(alturaPassaro);
             obstaculos.push(novoPassaro);
             novoPassaro.voar();
           }
           ultimoObstaculoTempo = tempoAtual;
         }
       }
-    }
 
-    //atualiza a pontuacao
-    if (frame % 30 === 0) {
-      pontuacao++;
-      dino.elementoScoreTexto.innerText = String(pontuacao).padStart(5, '0');
-    }
-  }
+      // Atualiza a pontuação
+      if (frame % 30 === 0) {
+        pontuacao++;
+        elementos.dino.elementoScoreTexto.innerText = String(pontuacao).padStart(5, '0');
+      }
 
-  if (frame % 10 === 0) {
-    obstaculos.forEach((obstaculo) => {
-      obstaculo.mover();
-      if (colisao(dino, obstaculo)) {
-        jogadorPerdeu();
+      if (frame % 10 === 0) {
+        for (let i = obstaculos.length - 1; i >= 0; i--) {
+          const obstaculo = obstaculos[i];
+          obstaculo.mover();
+
+          // Verifica se o obstáculo saiu da tela
+          const obstaculoRect = obstaculo.element.getBoundingClientRect();
+          if (obstaculoRect.right < 0) {
+            // Remove o obstáculo do array usando shift e da DOM usando remove
+            obstaculos.shift();
+            obstaculo.element.remove();
+          } else {
+            if (colisao(elementos.dino, obstaculo)) {
+              jogadorPerdeu();
+            }
+            if (obstaculo instanceof Passaro) {
+              obstaculo.voar();
+            }
+          }
+        }
       }
-      if (obstaculo instanceof Passaro) {
-        obstaculo.voar();
-      }
-    });
+    }
   }
 
   function colisao(dino, obstaculo) {
-    const margem = 10; // Margem de segurança
+    const margem = 10;
     const dinoRect = dino.element.getBoundingClientRect();
     const obstaculoRect = obstaculo.element.getBoundingClientRect();
-  
-    return (
-      dinoRect.right - margem > obstaculoRect.left &&
-      dinoRect.left + margem < obstaculoRect.right &&
-      dinoRect.bottom - margem > obstaculoRect.top &&
-      dinoRect.top + margem < obstaculoRect.bottom 
-    );
+
+    // Calculate margins for collision detection
+    const dinoLeft = dinoRect.left + margem;
+    const dinoRight = dinoRect.right - margem;
+    const dinoTop = dinoRect.top + margem;
+    const dinoBottom = dinoRect.bottom - margem;
+
+    const obstaculoLeft = obstaculoRect.left + margem;
+    const obstaculoRight = obstaculoRect.right - margem;
+    const obstaculoTop = obstaculoRect.top + margem;
+    const obstaculoBottom = obstaculoRect.bottom - margem;
+
+    const colisaoHorizontal = dinoRight > obstaculoLeft && dinoLeft < obstaculoRight;
+
+    const colisaoVertical = dinoBottom > obstaculoTop && dinoTop < obstaculoBottom;
+
+    if (colisaoHorizontal && colisaoVertical) {
+      return true;  // Collision occurred
+    }
+
+    return false;  // No collision
   }
 
   function jogadorPerdeu() {
@@ -313,37 +379,29 @@
     const restartDiv = document.createElement("div");
     restartDiv.className = "restart";
 
-    document.querySelector('.deserto').appendChild(perdeuDiv);
-    document.querySelector('.deserto').appendChild(restartDiv);
+    document.querySelector(".deserto").appendChild(perdeuDiv);
+    document.querySelector(".deserto").appendChild(restartDiv);
     clearInterval(gameLoop);
     document.querySelector(".restart").addEventListener("click", reiniciarJogo);
   }
 
   function reiniciarJogo() {
-    // Reset game state
-  clearInterval(gameLoop);
-  jogoPausado = false;
-  jogoIniciado = false;
-  dino.status = 0;
-  frame = 0;
-  pontuacao = 0;
-  // Clear any existing obstacles or clouds
-  obstaculos.forEach((obstaculo) => obstaculo.element.remove());
-  obstaculos = [];
-  nuvens.forEach((nuvem) => nuvem.element.remove());
-  nuvens = [];
-  // Restart the game
+    clearInterval(gameLoop);
+    jogoPausado = false;
+    jogoIniciado = false;
+    elementos.dino.status = status.correndo;
+    frame = 0;
+    pontuacao = 0;
+    obstaculos.forEach((obstaculo) => obstaculo.element.remove());
+    obstaculos = [];
+    nuvens.forEach((nuvem) => nuvem.element.remove());
+    nuvens = [];
+    const restartDiv = document.querySelector(".restart");
+    restartDiv.remove();
+    const perdeuDiv = document.querySelector(".perdeu");
+    perdeuDiv.remove();
+  }
 
-  const restartDiv = document.querySelector(".restart");
-  restartDiv.remove();
-  const perdeuDiv = document.querySelector(".perdeu");
-  perdeuDiv.remove();
-
-}
-  
-}
-
-//mudar a cor de fundo
   function trocarTurno() {
     ehDia = !ehDia;
     const quadradoJogo = document.querySelector('.deserto');
@@ -354,10 +412,9 @@
   }
 
   function aumentarVelocidade() {
-    // Aumenta o FPS a cada 1 min
-    FPS += AUMENTO_FPS_POR_MINUTO;
-    clearInterval(gameLoop); 
-    gameLoop = setInterval(run, 1000 / FPS); 
+    intervalos.criacaoObstaculo -= 100;
+    velocidades.cacto++;
+    velocidades.passaro++;
   }
 
   init();
