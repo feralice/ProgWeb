@@ -103,6 +103,7 @@
         correndo2: "-1457px",
         pulando: "-1259px",
         abaixando: "-1652px",
+        batendo: "-1590px",
       };
       this.#status = 0; // 0-correndo, 1-subindo, 2-descendo
       this.alturaMinima = 1;
@@ -216,21 +217,21 @@
   class Cacto extends Obstaculo {
     constructor() {
       super("cactoUm");
-      this.element.classList.add("cactoUm"); // Add the CSS class
+      this.element.classList.add("cactoUm");
     }
   }
   
   class DoisCactos extends Obstaculo {
     constructor() {
       super("doisCactos");
-      this.element.classList.add("doisCactos"); // Add the CSS class
+      this.element.classList.add("doisCactos");
     }
   }
   
   class VariosCactos extends Obstaculo {
     constructor() {
       super("variosCactos");
-      this.element.classList.add("variosCactos"); // Add the CSS class
+      this.element.classList.add("variosCactos"); 
     }
   }
 
@@ -244,7 +245,7 @@
       this.element = document.createElement("div");
       this.element.className = "passaro";
       this.element.style.backgroundPositionX = this.backgroundPositionsX.fechandoAsa;
-      this.element.style.bottom = `${altura}px`; // Ajuste da altura do pássaro
+      this.element.style.bottom = `${altura}px`;
       this.element.style.width = "50px";
       this.element.style.height = "45px";
       this.element.style.right = "0px";
@@ -335,6 +336,7 @@
           } else {
             if (colisao(elementos.dino, obstaculo)) {
               jogadorPerdeu();
+              elementos.dino.element.style.backgroundPositionX = elementos.dino.backgroundPositionsX.batendo;
             }
             if (obstaculo instanceof Passaro) {
               obstaculo.voar();
@@ -400,6 +402,8 @@
     restartDiv.remove();
     const perdeuDiv = document.querySelector(".perdeu");
     perdeuDiv.remove();
+    elementos.dino.element.style.bottom = 0;
+    elementos.dino.element.style.backgroundPositionX = elementos.dino.backgroundPositionsX.pulando;
   }
 
   function trocarTurno() {
