@@ -1,3 +1,6 @@
+Explicação correta
+Nota: 2.0
+
 Na linguagem Javascript, qual é a diferença entre == e === ?
 
 

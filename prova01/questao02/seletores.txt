@@ -1,3 +1,6 @@
+Seletores não identificados
+Nota: 0.0
+
 Podemos utilizar:
 id - um seletor único,
 class

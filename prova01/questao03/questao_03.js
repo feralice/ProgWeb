@@ -1,4 +1,7 @@
-class Venda{
+/* Código desenvolvido corretamente */
+/* Nota: 2.0 */
+
+class Venda {
     constructor(id, quantidade, preco) {
         this.id = id;
         this.quantidade = quantidade;
@@ -21,7 +24,7 @@ class Venda{
         this.id = novoId;
     }
 
-    setQuantidade(novaquantidade){
+    setQuantidade(novaquantidade) {
         this.quantidade = novaquantidade;
     }
 
@@ -35,10 +38,10 @@ class Venda{
 
 }
 //primeiro obj
-const primeiraVenda = new Venda (1, 2, 50);
+const primeiraVenda = new Venda(1, 2, 50);
 console.log(primeiraVenda.getValorTotal());
 
 //segundo obj
-const segundaVenda = new Venda (2, 5, 200);
+const segundaVenda = new Venda(2, 5, 200);
 console.log(segundaVenda.getValorTotal());
 
