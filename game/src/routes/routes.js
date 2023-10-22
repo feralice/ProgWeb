@@ -9,4 +9,7 @@ router.get('/', main.index);
 //rota para o /about
 router.get('/about', main.about);
 
+//rota para a ui
+router.get('/ui', main.ui);
+
 export default router;
