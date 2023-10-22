@@ -14,8 +14,10 @@ app.use(sass({
   prefix: "/css",
 }));
 
-//pra enviar arquivos estaticos tipo fotos
+//pra enviar arquivos estaticos
 app.use("/img",express.static(`${__dirname}/public/img`));
+app.use("/css",express.static(`${__dirname}/public/css`));
+app.use("/webfonts", express.static(`${__dirname}/node_modules/@fortawesome/fontawesome-free/webfonts`))
 
 //cria a engine
 app.engine('handlebars', engine({
