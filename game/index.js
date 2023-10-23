@@ -2,6 +2,7 @@ import express from 'express';
 import router from './src/routes/routes';
 import { engine } from 'express-handlebars';
 import sass from "node-sass-middleware"
+const path = require('path');
 
 const morgan = require('morgan');
 const app = express();
@@ -22,7 +23,6 @@ app.use("/js", [
   express.static(`${__dirname}/public/js`),
   express.static(`${__dirname}/node_modules/bootstrap/dist/js/`),
   express.static(`${__dirname}/node_modules/@popperjs/core/dist/umd/`),
-
 ]);
 //cria a engine
 app.engine('handlebars', engine({
@@ -30,6 +30,7 @@ app.engine('handlebars', engine({
   layoutsDir: `${__dirname}/src/views/layouts`,
   defaultLayout: 'main',
 }));
+app.use('/tRex', express.static("../../ProgWeb/tRex"));
 
 //seta a engine
 app.set('view engine', 'handlebars');

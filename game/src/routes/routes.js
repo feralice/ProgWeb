@@ -12,4 +12,7 @@ router.get('/about', main.about);
 //rota para a ui
 router.get('/ui', main.ui);
 
+//rota para o jogo
+router.get('/game', main.game);
+
 export default router;
