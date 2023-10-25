@@ -37,9 +37,10 @@ app.set('view engine', 'handlebars');
 //onde as views estarão localizada
 app.set('views', `${__dirname}/src/views`);
 
+app.use(express.urlencoded({extended: false}));
 app.use(router);
 app.use(morgan('combined'));
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em "http://localhost:${PORT}" : D`);
+  console.log(`Servidor rodando em "http://localhost:${PORT}" :D`);
 });

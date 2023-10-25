@@ -1,4 +1,4 @@
-import {Area} from "../models/index";
+import { Area } from "../models/index";
 
 const index = async(req,res) => {
     const areas = await Area.findAll();

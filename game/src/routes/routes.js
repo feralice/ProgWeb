@@ -2,20 +2,26 @@
 import express from 'express';
 import main from '../controllers/main';
 import areaController from '../controllers/area'
+import cursoController from '../controllers/curso'
 const router = express.Router();
 
-//rota para o home
+//main
 router.get('/', main.index);
-
-//rota para o /about
 router.get('/about', main.about);
-
-//rota para a ui
 router.get('/ui', main.ui);
-
-//rota para o jogo
 router.get('/game', main.game);
 
+//area
 router.get('/areas', areaController.index);
+
+//curso
+router.get('/curso', cursoController.index);
+router.get('/curso/create', cursoController.create);
+router.post('/curso/create', cursoController.create);
+router.get('/curso/:id', cursoController.read);
+router.get('/curso/update/:id', cursoController.update);
+router.post('/curso/update/:id', cursoController.update);
+router.get('/curso/remove/:id', cursoController.remove);
+
 
 export default router;

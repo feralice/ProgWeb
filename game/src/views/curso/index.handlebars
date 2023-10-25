@@ -1,0 +1,19 @@
+<table class="table table-secondary">
+  <thead>
+    <tr>
+      <th scope="col">Sigla</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Área</th>
+      <th scope="col">Opções</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each cursos}}
+    <tr class="table-primary">
+      <td>{{sigla}}</td>
+      <td>{{nome}}</td>
+      <td>{{areaId}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
