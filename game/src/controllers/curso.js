@@ -1,5 +1,6 @@
 const models = require("../models/index");
 const Curso = models.Curso;
+const Area = models.Area;
 
 
 const index = async(req, res) => {
@@ -26,16 +27,52 @@ const create = async (req, res) => {
 
 const read = async(req, res) => {
     const id = req.params.id;
-    const curso = await Curso.findOne({where:{id}});
-    res.render("curso/read", {
-        curso: curso.toJSON(),
-    })
+
+    try {
+        const curso = await Curso.findByPk(id, {include:Area});
+        res.render("curso/read", {
+            curso: curso.toJSON(),
+        })
+    } catch(e) {
+        console.log(e);
+    }
 };
 
-const update = (req, res) => {};
+const update = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const curso = await Curso.findByPk(id);
 
-const remove = (req, res) => {
+        if (!curso) {
+            res.status(404).send("Curso não encontrado");
+            return;
+        }
 
+        curso.sigla = req.body.sigla;
+        curso.nome = req.body.nome;
+        curso.areaId = req.body.areaId;
+
+        await curso.save();
+
+        res.redirect(`/curso/${id}`);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Erro ao atualizar o curso");
+    }
 };
 
-module.exports = {index, create, update, remove, read};
+const remove = async(req, res) => {
+    const { id } = req.params;
+
+    try{
+        await Curso.destroy({where: {id:id}});
+        res.send("Curso apagado com sucesso :D");
+    } catch(e) {
+        console.log(e);
+        res.status(500).send(e);
+
+    }
+    
+};
+
+module.exports = { index , create, update, remove, read };

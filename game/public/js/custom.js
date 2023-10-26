@@ -129,3 +129,18 @@
       new bootstrap.Tooltip(tooltip); // eslint-disable-line no-new
     }
   })();
+
+  function deleteCurso(id) {
+    $.ajax({
+      url: `/curso/${id}`,
+      type: 'DELETE',
+    })
+    .done(function(msg){
+      console.log(msg);
+      window.location.href = "/curso";
+    })
+    .fail(function(msg){
+      console.log("Erro ao deletar curso :(");
+      console.log(msg);
+    })
+  }

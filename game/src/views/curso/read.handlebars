@@ -1,8 +1,101 @@
-<div class="card text-white bg-secondary mb-3" style="max-width: 20rem;">
-    <div class="card-header">{{curso.nome}}</div>
+<div class="card border-primary mb-3">
+    <div class="card-header card-cursos">
+        {{curso.nome}}
+        <div> 
+            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" style="text-decoration: none;"> 
+                <i class="fa-regular fa-trash-can fa-lg"></i>
+            </a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-curso" style="text-decoration: none;">
+                <i class="fa-regular fa-pen-to-square fa-lg"></i>
+            </a>
+        </div> 
+    </div>
     <div class="card-body">
         <h6 class="card-title">Sigla: {{curso.sigla}}</h6>
         <p class="card-text">Descrição: {{curso.descricao}}</p>
         <p class="card-text">Area: {{curso.areaId}}</p>
     </div>
 </div>
+
+
+<!-- Modal de exclusão-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Você realmente deseja excluir?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Não dá pra reverter depois 👀
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Desistir</button>
+        <button id="deleteButton" type="button" class="btn btn-primary">Excluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal de edição-->
+<div class="modal fade" id="modal-edit-curso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar informações curso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/curso/update/{{curso.id}}" method="post">
+          <p>Edite os campos que você deseja</p>
+          <div class="form-group">
+            <label for="sigla" class="form-label mt-2">Sigla</label>
+            <input type="text" name="sigla" class="form-control" value="{{curso.sigla}}">
+          </div>
+          <div class="form-group">
+            <label for="nome" class="form-label mt-2">Nome</label>
+            <input type="text" name="nome" class="form-control" value="{{curso.nome}}">
+          </div>
+
+          <fieldset class="form-group">
+            <legend class="mt-4">Área de conhecimento</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="areaId" id="areaId1" value="1">
+              <label class="form-check-label" for="exatas">
+                Exatas
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="areaId" id="areaId2" value="2">
+              <label class="form-check-label" for "humanas">
+                Humanas
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="areaId" id="areaId3" value="3" checked>
+              <label class="form-check-label" for="biologicas">
+                Biologicas
+              </label>
+            </div>
+          </fieldset>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">Cancelar</button>
+            <button id="my-button" class="btn btn-primary mt-3">Enviar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="/curso">
+    <button type="text" class="btn btn-outline-primary mt-3">Voltar</button>
+</a>
+
+<script>
+    const deleteButton = document.getElementById("deleteButton");
+    deleteButton.onclick = function () {
+        deleteCurso({{curso.id}});
+    }
+</script>
