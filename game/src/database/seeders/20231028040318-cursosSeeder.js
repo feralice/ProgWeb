@@ -7,7 +7,7 @@ module.exports = {
       {
         sigla: 'ES',
         nome: 'Engenharia de Software',
-        descricao: 'Descrição da Engenharia de Software',
+        descricao: 'Curso dos profs tops',
         areaId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -15,7 +15,7 @@ module.exports = {
       {
         sigla: 'MV',
         nome: 'Medicina Veterinária',
-        descricao: 'Descrição da Medicina Veterinária',
+        descricao: 'cuidar de animalzinhosss',
         areaId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -23,7 +23,7 @@ module.exports = {
       {
         sigla: 'H',
         nome: 'História',
-        descricao: 'Descrição de História',
+        descricao: 'história top',
         areaId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
