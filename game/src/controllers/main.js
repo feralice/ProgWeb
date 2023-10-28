@@ -1,6 +1,6 @@
 const index = (req, res) => {
     res.render("main/index", {
-        title: "olá, bem vindo",
+        title: "Olá, bem vindo",
         body: "Site feito para a matéria de programação web do curso engenharia de software",
         student: "Fernanda Alice Farias Duarte"
     });

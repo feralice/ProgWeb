@@ -20,10 +20,27 @@ body {
 }
 
 #titleGame {
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 }
 
 .card-cursos{
     display: flex;
     justify-content: space-between;
 }
+
+#content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#content {
+    background-color: rgba(232, 50, 131, 0.5);
+    border-radius: 24px;
+    text-align: center;
+    max-width: 50%;
+    padding: 80px;
+    margin: 140px auto 0; 
+    flex-direction: column;
+}
+
